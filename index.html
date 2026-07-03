@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Xiaohang Tang</title>
+<meta name="description" content="Xiaohang Tang — Research Scientist Intern at Google DeepMind and PhD candidate at UCL, building self-improving algorithms from games to post-training." />
+
+<!-- Fraunces (display), Hanken Grotesk (body), JetBrains Mono (labels / data) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — plain white surfaces; four domain colors plus
+   one gold accent (the self-improvement core) do all the work.
+   ============================================================ */
+:root{
+  --paper:    #ffffff;
+  --paper-2:  #f7f7f8;
+  --card:     #fcfcfd;
+
+  --games:    #9fd3e8;   /* games & multi-agent systems  */
+  --robot:    #8fd6a2;   /* embodied decision-making     */
+  --llm:      #cdb8ed;   /* LLM post-training            */
+  --dllm:     #f0a3a3;   /* diffusion LLM post-training  */
+  --gold:     #c3b04a;   /* the core                     */
+  --games-ink:#33708f;
+  --robot-ink:#2f8f5b;
+  --llm-ink:  #7a5cb8;
+  --dllm-ink: #c05555;
+  --gold-ink: #8f7d2e;
+
+  --on-paper:       #1f1d27;
+  --on-paper-muted: #6f6c7a;
+  --rule: rgba(31,29,39,.11);
+
+  --display: "Fraunces", Georgia, serif;
+  --body:    "Hanken Grotesk", system-ui, sans-serif;
+  --mono:    "JetBrains Mono", ui-monospace, monospace;
+
+  --maxw: 1080px;
+  --gutter: clamp(20px, 5vw, 64px);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:15px;}
+[id]{scroll-margin-top:84px;}
+body{
+  margin:0;
+  font-family:var(--body);
+  background:var(--paper);
+  color:var(--on-paper);
+  font-size:14.5px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+a{color:inherit;}
+h3{margin:0;font-family:var(--display);font-weight:500;line-height:1.05;letter-spacing:-.01em;}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--on-paper-muted);
+}
+
+/* ============================ NAV ============================ */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.nav__inner{
+  max-width:var(--maxw);margin:0 auto;padding:14px var(--gutter);
+  display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+}
+.nav__mark{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.01em;white-space:nowrap;}
+.nav__links{display:flex;gap:22px;font-size:.88rem;}
+.nav__links a{text-decoration:none;color:var(--on-paper-muted);transition:color .2s;}
+.nav__links a:hover{color:var(--on-paper);}
+@media(max-width:520px){ .nav__links{display:none;} }
+
+/* ============================ SHELL ============================ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);}
+section{padding:clamp(36px,5vw,64px) 0;}
+
+/* ============================ HERO ============================ */
+.hero{padding:clamp(40px,6vw,76px) 0 clamp(36px,5vw,56px);}
+.hero__name{
+  font-family:var(--display);
+  font-size:clamp(2rem,4.8vw,3.1rem);
+  font-weight:400;letter-spacing:-.02em;line-height:.95;
+  margin:0 0 .45em;
+}
+.hero__name em{font-style:italic;}
+.hero__role{
+  font-size:clamp(.95rem,1.5vw,1.08rem);color:var(--on-paper-muted);
+  max-width:56ch;font-weight:400;line-height:1.55;margin:0;
+}
+.hero__role b{color:var(--on-paper);font-weight:500;}
+.hero__role em{color:var(--on-paper);font-style:normal;font-weight:500;}
+.ilink{
+  color:var(--games-ink);text-decoration:none;font-weight:500;
+  border-bottom:1.5px solid color-mix(in srgb,var(--games) 45%,transparent);
+  transition:border-color .2s,color .2s;
+}
+.ilink:hover{color:var(--games);border-color:var(--games);}
+
+/* hero grid: intro left, news right */
+.hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(26px,4.5vw,54px);align-items:start;}
+@media(max-width:860px){ .hero__grid{grid-template-columns:1fr;gap:26px;} }
+.news{
+  border:1px solid var(--rule);border-radius:12px;
+  background:
+    linear-gradient(90deg,var(--games),var(--robot),var(--llm),var(--dllm)) top/100% 3px no-repeat,
+    var(--card);
+  padding:14px 15px 15px 16px;max-height:300px;overflow-y:auto;
+  box-shadow:0 10px 30px -24px rgba(31,29,39,.5);
+  scrollbar-width:thin;scrollbar-color:rgba(31,29,39,.25) transparent;
+}
+.news::-webkit-scrollbar{width:6px;}
+.news::-webkit-scrollbar-thumb{background:rgba(31,29,39,.22);border-radius:6px;}
+.news .eyebrow{display:block;margin-bottom:12px;}
+.news ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;position:relative;}
+.news ul::before{content:"";position:absolute;left:6px;top:10px;bottom:10px;width:2px;background:var(--rule);border-radius:2px;}
+.news li{
+  display:grid;grid-template-columns:15px 76px 1fr;gap:9px;align-items:start;
+  font-size:.95rem;line-height:1.4;color:var(--on-paper-muted);
+  padding:6px 8px 6px 0;border-radius:8px;position:relative;
+  transition:background .2s;
+}
+.news li:hover{background:color-mix(in srgb,var(--c) 9%, transparent);}
+.news li::before{
+  content:"";width:10px;height:10px;border-radius:50%;
+  background:var(--c);border:2px solid rgba(31,29,39,.7);
+  margin-top:.42em;justify-self:start;
+  box-shadow:0 0 0 3px var(--card);
+}
+.news .d{font-family:var(--mono);font-size:.78rem;color:var(--on-paper);white-space:nowrap;padding-top:3px;}
+.news b{color:var(--on-paper);font-weight:600;}
+
+/* contact pills — email, LinkedIn, Twitter */
+.contacts{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
+.cbtn{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:.78rem;text-decoration:none;
+  color:var(--on-paper);
+  border:1px solid var(--rule);border-radius:100px;
+  background:var(--card);
+  padding:9px 16px 9px 13px;
+  transition:border-color .2s, color .2s, transform .2s, box-shadow .2s;
+}
+.cbtn svg{width:16px;height:16px;flex:none;}
+.cbtn:hover{
+  color:var(--games-ink);border-color:color-mix(in srgb,var(--games) 55%,transparent);
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px -14px color-mix(in srgb,var(--games) 60%,transparent);
+}
+
+/* ============================ FIG. 1 — THE HUB ============================
+   A self-improvement core (the ball) with branches expanding to four
+   problem families. Desktop: SVG. Mobile: stacked fallback.            */
+.loopfig{margin-top:clamp(32px,5vw,56px);}
+.loopfig__lead{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(1.1rem,2.2vw,1.45rem);line-height:1.3;
+  max-width:none;margin:0 0 10px;
+}
+.loopfig__lead em{font-style:italic;}
+
+.hub-svg{display:block;width:100%;max-width:900px;height:auto;margin:0 auto;}
+.hub-svg .title{font-family:var(--display);font-size:25px;fill:var(--on-paper);}
+.hub-svg .mech{font-family:var(--mono);font-size:13.5px;letter-spacing:.14em;text-transform:uppercase;}
+.hub-svg .ballt{font-family:var(--display);font-style:italic;font-size:30px;fill:var(--on-paper);}
+.hub-svg .balls{font-family:var(--mono);font-size:13px;letter-spacing:.08em;fill:var(--on-paper-muted);}
+.hub-svg .sub{font-family:var(--body);font-style:italic;font-size:16px;fill:var(--on-paper-muted);}
+
+/* hover: enlarge the block under the cursor */
+.nodeg{
+  transform-box:fill-box;transform-origin:center;
+  transition:transform .3s cubic-bezier(.2,.7,.2,1);
+  cursor:default;
+}
+.hub-svg a .nodeg{cursor:pointer;}
+.nodeg:hover{transform:scale(1.12);}
+.ballw:hover{transform:scale(1.05);}
+
+/* hovering a node spotlights its branch, dims the others */
+.branchg{transition:opacity .3s;}
+.branchg.dim{opacity:.22;}
+.branch{transition:stroke-width .3s;}
+.branchg.hot .branch{stroke-width:6;}
+
+/* traveling pulses: experience flowing outward from the core */
+.pulse{opacity:0;}
+
+/* breathing ripple around the ball */
+.ripple{
+  transform-box:fill-box;transform-origin:center;
+  animation:ripple 3.4s ease-out infinite;
+}
+.core{
+  transform-box:fill-box;transform-origin:center;
+  animation:breathe 5.5s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.025);}}
+@keyframes ripple{
+  0%{transform:scale(1);opacity:.45;}
+  100%{transform:scale(1.15);opacity:0;}
+}
+
+.branch{
+  fill:none;stroke-width:4;stroke-linecap:round;
+  stroke-dasharray:560;stroke-dashoffset:0;
+  animation:draw 1.2s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes draw{from{stroke-dashoffset:560;}}
+.orbit{
+  transform-box:fill-box;transform-origin:center;
+  animation:spin 46s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* mobile fallback: ball on top, branches stacked */
+.hub-mobile{display:none;}
+@media(max-width:720px){
+  .hub-svg{display:none;}
+  .hub-mobile{display:block;margin-top:18px;}
+  .hub-mobile .ball{
+    width:152px;height:152px;border-radius:50%;
+    border:2px solid rgba(31,29,39,.7);background:#f9f4d8;
+    margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    text-align:center;padding:12px;
+  }
+  .hub-mobile .ball .t{font-family:var(--display);font-style:italic;font-size:1.1rem;line-height:1.1;}
+  .hub-mobile .ball .s{font-family:var(--mono);font-size:.6rem;color:var(--on-paper-muted);letter-spacing:.06em;}
+  .hub-mobile .stem{width:2px;height:26px;background:var(--rule);margin:0 auto;}
+  .hub-mobile ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
+  .hub-mobile li{
+    border:1px solid var(--rule);border-left:3px solid var(--c);
+    border-radius:6px;padding:12px 14px;background:var(--card);
+  }
+  .hub-mobile li a{display:block;text-decoration:none;color:inherit;}
+  .hub-mobile li .t{font-family:var(--display);font-size:1.05rem;}
+  .hub-mobile li .m{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ci,var(--c));margin-top:2px;}
+  .hub-mobile li .s{font-size:.8rem;font-style:italic;color:var(--on-paper-muted);margin-top:4px;}
+}
+
+/* ============================ DOMAIN CARDS ============================ */
+.domains{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,18px);}
+@media(max-width:1000px){ .domains{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:640px){ .domains{grid-template-columns:1fr;} }
+.dcard{
+  background:var(--card);
+  border:1px solid var(--rule);border-top:3px solid var(--c);border-radius:6px;
+  padding:16px 15px 18px;display:flex;flex-direction:column;
+  transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s;
+}
+.dcard:hover{
+  transform:translateY(-5px);
+  box-shadow:0 18px 40px -18px color-mix(in srgb,var(--c) 45%,transparent);
+}
+.dcard.flash{
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 75%,transparent);
+  transition:box-shadow .4s;
+}
+.dcard__mech{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ci,var(--c));}
+.dcard h3{font-size:1.08rem;margin:7px 0 4px;}
+.dcard__blurb{color:var(--on-paper-muted);font-size:.8rem;margin-bottom:13px;}
+.dcard ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+.dcard li{font-size:.8rem;line-height:1.4;}
+.dcard li .t{font-weight:500;}
+.dcard li .meta{display:block;font-family:var(--mono);font-size:.68rem;color:var(--on-paper-muted);margin-top:4px;letter-spacing:.02em;}
+.dcard .venue{display:inline-block;color:var(--on-paper);font-weight:500;
+  background:color-mix(in srgb,var(--c) 38%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 85%,transparent);
+  padding:0 7px;border-radius:100px;margin-right:6px;}
+
+/* ============================ PUBLICATIONS ============================ */
+.pubs{background:var(--paper-2);}
+.pub{
+  display:grid;grid-template-columns:112px 1fr auto;gap:20px;align-items:baseline;
+  padding:15px 12px;border-top:1px solid var(--rule);
+  border-radius:6px;
+  transition:background .25s;
+}
+.pub:hover{background:color-mix(in srgb,var(--c) 6%, transparent);}
+.pub:first-of-type{border-top:none;}
+.pub:last-child{border-bottom:1px solid var(--rule);}
+.pub__venue{font-family:var(--mono);font-size:.72rem;color:var(--on-paper-muted);letter-spacing:.02em;}
+.pub__venue b{display:inline-block;color:var(--on-paper);font-weight:600;
+  background:color-mix(in srgb,var(--c) 38%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 85%,transparent);
+  padding:1px 9px;border-radius:100px;margin-bottom:4px;}
+.pub__venue span{display:block;}
+.pub__title{font-family:var(--display);font-size:1.02rem;line-height:1.25;color:var(--on-paper);}
+.plink{color:inherit;text-decoration:none;border-bottom:1.5px solid transparent;transition:border-color .2s,color .2s;}
+.plink:hover{color:var(--games-ink);border-color:color-mix(in srgb,var(--games) 45%,transparent);}
+.pub__title .me{font-style:italic;color:var(--on-paper-muted);font-family:var(--body);font-size:.76rem;display:block;margin-top:5px;letter-spacing:0;}
+.pub__title .me b{font-weight:600;color:var(--on-paper);}
+.pub__tag{
+  justify-self:end;align-self:start;margin-top:3px;
+  width:11px;height:11px;border-radius:50%;background:var(--c);flex:none;
+  border:1.5px solid rgba(31,29,39,.55);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 45%,transparent);
+}
+@media(max-width:720px){
+  .pub{grid-template-columns:1fr auto;}
+  .pub__venue{grid-column:1;}
+  .pub__title{grid-column:1 / -1;grid-row:2;}
+  .pub__tag{grid-column:2;grid-row:1;}
+}
+
+/* ============================ FOOTER ============================ */
+.foot{
+  background:var(--paper-2);border-top:1px solid var(--rule);
+  padding:30px 0;
+}
+.foot__inner{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:baseline;justify-content:space-between;}
+.foot a{font-family:var(--mono);font-size:.8rem;color:var(--on-paper);text-decoration:none;border-bottom:1.5px solid var(--games);padding-bottom:2px;}
+.foot a:hover{color:var(--games-ink);}
+.foot__fine{font-family:var(--mono);font-size:.72rem;color:var(--on-paper-muted);letter-spacing:.04em;}
+
+/* ============================ MOTION / A11Y ============================ */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:2px;}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation:none!important;transition:none!important;}
+  .reveal{opacity:1;transform:none;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav">
+  <div class="nav__inner">
+    <div class="nav__mark">Xiaohang&nbsp;Tang</div>
+    <div class="nav__links">
+      <a href="#spectrum">Research</a>
+      <a href="#publications">Publications</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero">
+  <div class="wrap">
+    <h1 class="hero__name">Xiaohang <em>Tang</em></h1>
+
+    <div class="hero__grid">
+      <div>
+    <p class="hero__role">
+      Hi, and welcome — I'm Xiaohang. I'm currently a Research Scientist Intern at <b>Google&nbsp;DeepMind</b>
+      and a PhD candidate at <b>UCL</b>, advised by
+      <a class="ilink" href="https://rhinelab.ai/team/ilija-bogunovic" target="_blank" rel="noopener">Ilija Bogunovic</a>.
+      I have also been fortunate to work closely with
+      <a class="ilink" href="https://yangyaodong.com/" target="_blank" rel="noopener">Yaodong Yang</a>.
+      Before the PhD, I obtained my master's degree in Data Science at UCL and
+      bachelor degree in Math at Sun Yat-sen University (SYSU).
+      My research aims to build <em>self-improving systems</em> — agents and models
+      for decision-making, reasoning, and generation — adapting to a wide range of
+      important problems, from multi-agent systems (e.g. games) and robust control
+      to LLM alignment and diffusion LLM post-training.
+    </p>
+
+    <!-- CONTACT -->
+    <div class="contacts">
+      <a class="cbtn" href="mailto:xiaohang.tang.20@ucl.ac.uk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>
+        </svg>
+        Email
+      </a>
+      <a class="cbtn" href="https://scholar.google.co.uk/citations?user=VVaL9mwAAAAJ&hl=en&oi=ao" target="_blank" rel="me noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+        </svg>
+        Google Scholar
+      </a>
+      <a class="cbtn" href="https://www.linkedin.com/in/xiaohang-tang-99488a37b" target="_blank" rel="me noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.11 20.45H3.56V9h3.55v11.45z"/>
+        </svg>
+        LinkedIn
+      </a>
+      <a class="cbtn" href="https://x.com/xiaohang_tang" target="_blank" rel="me noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.23l-4.88-6.38L6.5 22H3.37l7.24-8.28L2.4 2h6.39l4.41 5.83L18.9 2zm-1.09 18.1h1.72L7.68 3.8H5.83l11.98 16.3z"/>
+        </svg>
+        Twitter
+      </a>
+    </div>
+      </div>
+
+      <aside class="news reveal">
+        <span class="eyebrow">News</span>
+        <ul>
+          <li style="--c:var(--gold)"><span class="d">Jun 2026</span><span>Joined <b>Google DeepMind</b> (London) as a Research Scientist Intern, working on multi-agent systems.</span></li>
+          <li style="--c:var(--llm)"><span class="d">May 2026</span><span><b>RSPO</b> accepted at <b>ICML 2026</b>; <b>GDSD</b> preprint released on arXiv.</span></li>
+          <li style="--c:var(--dllm)"><span class="d">Jan 2026</span><span><b>wd1</b> and <b>Robust Multi-Objective Controlled Decoding</b> accepted at <b>ICLR 2026</b>.</span></li>
+          <li><span class="d">Oct 2025</span><span><b>Robust Adversarial RL in Stochastic Games</b> accepted at the NeurIPS 2025 Reliable ML Workshop.</span></li>
+          <li style="--c:var(--dllm)"><span class="d">Jun 2025</span><span><b>wd1</b> report released on arXiv.</span></li>
+          <li style="--c:var(--games)"><span class="d">Mar 2025</span><span>Invited talk on <b>ARDT</b> at the Google DeepMind Game Theory Group (London).</span></li>
+          <li style="--c:var(--robot)"><span class="d">Sep 2024</span><span><b>ARDT</b> accepted at <b>NeurIPS 2024</b>.</span></li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- ============ FIG. 1 — THE SELF-IMPROVEMENT HUB ============ -->
+    <figure class="loopfig reveal" id="spectrum" style="margin-left:0;margin-right:0;">
+      <p class="loopfig__lead">My research spectrum: from <em>games</em> to <em>post-training</em></p>
+
+      <!-- desktop SVG: radial fan — branches spread up, left, and right from the ball -->
+      <svg class="hub-svg" viewBox="0 0 1200 455" role="img"
+           aria-label="Diagram: a central self-improvement core with branches radiating outward in all directions to four problem families — games and multi-agent systems to the left, robust decision-making to the upper left, LLM post-training to the upper right, and diffusion LLM post-training to the right.">
+        <defs>
+          <radialGradient id="ballg" cx="38%" cy="32%" r="78%">
+            <stop offset="0%" stop-color="#fffef2"/>
+            <stop offset="100%" stop-color="#f5eec9"/>
+          </radialGradient>
+        </defs>
+
+        <!-- branches radiating outward from the ball, each with a traveling pulse -->
+        <g class="branchg" id="bg-games">
+          <path class="branch" style="stroke:var(--games); animation-delay:.15s"
+                d="M461 317 C 380 330, 300 342, 204 350"/>
+          <circle class="pulse" r="4.5" style="fill:var(--games);stroke:rgba(31,29,39,.6);stroke-width:1;">
+            <animateMotion dur="3s" begin="1.6s" repeatCount="indefinite"
+                           path="M461 317 C 380 330, 300 342, 204 350"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.8;1"
+                     dur="3s" begin="1.6s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <g class="branchg" id="bg-robot">
+          <path class="branch" style="stroke:var(--robot); animation-delay:.3s"
+                d="M488 215 C 452 188, 415 158, 376 134"/>
+          <circle class="pulse" r="4.5" style="fill:var(--robot);stroke:rgba(31,29,39,.6);stroke-width:1;">
+            <animateMotion dur="3s" begin="2s" repeatCount="indefinite"
+                           path="M488 215 C 452 188, 415 158, 376 134"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.8;1"
+                     dur="3s" begin="2s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <g class="branchg" id="bg-llm">
+          <path class="branch" style="stroke:var(--llm); animation-delay:.45s"
+                d="M712 215 C 748 188, 785 158, 824 134"/>
+          <circle class="pulse" r="4.5" style="fill:var(--llm);stroke:rgba(31,29,39,.6);stroke-width:1;">
+            <animateMotion dur="3s" begin="2.4s" repeatCount="indefinite"
+                           path="M712 215 C 748 188, 785 158, 824 134"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.8;1"
+                     dur="3s" begin="2.4s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <g class="branchg" id="bg-dllm">
+          <path class="branch" style="stroke:var(--dllm); animation-delay:.6s"
+                d="M739 317 C 820 330, 900 342, 1012 350"/>
+          <circle class="pulse" r="4.5" style="fill:var(--dllm);stroke:rgba(31,29,39,.6);stroke-width:1;">
+            <animateMotion dur="3s" begin="2.8s" repeatCount="indefinite"
+                           path="M739 317 C 820 330, 900 342, 1012 350"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.8;1"
+                     dur="3s" begin="2.8s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- the ball -->
+        <g class="nodeg ballw">
+          <circle class="ripple" cx="600" cy="300" r="122" fill="none"
+                  style="stroke:var(--gold)" stroke-width="2.5"/>
+          <circle class="orbit" cx="600" cy="300" r="134" fill="none"
+                  style="stroke:var(--gold-ink)" stroke-width="1.5" stroke-dasharray="3 8" opacity=".5"/>
+          <circle class="core" cx="600" cy="300" r="122" fill="url(#ballg)"
+                  style="stroke:rgba(31,29,39,.78)" stroke-width="2.5"/>
+          <text class="ballt" x="600" y="296" text-anchor="middle">Self-improvement</text>
+          <text class="balls" x="600" y="328" text-anchor="middle">act · evaluate · update</text>
+        </g>
+
+        <!-- left: games → its papers -->
+        <a href="#games-work" data-domain="games" aria-label="Games and multi-agent systems — see papers">
+          <g class="nodeg">
+            <text class="title" x="186" y="274" text-anchor="middle">Games &amp; multi-agent systems</text>
+            <text class="mech"  x="186" y="298" text-anchor="middle" style="fill:var(--games-ink)">self-play</text>
+            <text class="sub"   x="186" y="320" text-anchor="middle">improving against its own best responses</text>
+            <circle cx="186" cy="350" r="15" style="fill:var(--games)" opacity=".4"/>
+            <circle cx="186" cy="350" r="8"  style="fill:var(--games);stroke:rgba(31,29,39,.75);stroke-width:1.5;"/>
+          </g>
+        </a>
+
+        <!-- upper left: embodied decision-making → publications -->
+        <a href="#embodied-work" data-domain="robot" aria-label="Robust Decision-Making — see papers">
+          <g class="nodeg">
+            <text class="title" x="365" y="46" text-anchor="middle">Robust Decision-Making</text>
+            <text class="mech"  x="365" y="70" text-anchor="middle" style="fill:var(--robot-ink)">imagined self-play</text>
+            <text class="sub"   x="365" y="92" text-anchor="middle">planning against imagined adversary</text>
+            <circle cx="365" cy="122" r="15" style="fill:var(--robot)" opacity=".4"/>
+            <circle cx="365" cy="122" r="8"  style="fill:var(--robot);stroke:rgba(31,29,39,.75);stroke-width:1.5;"/>
+          </g>
+        </a>
+
+        <!-- upper right: LLM post-training → its papers -->
+        <a href="#llm-work" data-domain="llm" aria-label="LLM post-training — see papers">
+          <g class="nodeg">
+            <text class="title" x="835" y="46" text-anchor="middle">LLM post-training</text>
+            <text class="mech"  x="835" y="70" text-anchor="middle" style="fill:var(--llm-ink)">self-play alignment</text>
+            <text class="sub"   x="835" y="92" text-anchor="middle">optimizing preferences against its older self</text>
+            <circle cx="835" cy="122" r="15" style="fill:var(--llm)" opacity=".4"/>
+            <circle cx="835" cy="122" r="8"  style="fill:var(--llm);stroke:rgba(31,29,39,.75);stroke-width:1.5;"/>
+          </g>
+        </a>
+
+        <!-- right: diffusion LLM post-training → its papers -->
+        <a href="#dllm-work" data-domain="dllm" aria-label="Diffusion LLM post-training — see papers">
+          <g class="nodeg">
+            <text class="title" x="1030" y="274" text-anchor="middle">Diffusion LLM post-training</text>
+            <text class="mech"  x="1030" y="298" text-anchor="middle" style="fill:var(--dllm-ink)">self-distillation</text>
+            <text class="sub"   x="1030" y="320" text-anchor="middle">distilling its own reward guided denoiser</text>
+            <circle cx="1030" cy="350" r="15" style="fill:var(--dllm)" opacity=".4"/>
+            <circle cx="1030" cy="350" r="8"  style="fill:var(--dllm);stroke:rgba(31,29,39,.75);stroke-width:1.5;"/>
+          </g>
+        </a>
+      </svg>
+
+      <!-- mobile fallback -->
+      <div class="hub-mobile">
+        <div class="ball">
+          <div class="t">Self-improvement</div>
+          <div class="s">act · evaluate · update</div>
+        </div>
+        <div class="stem"></div>
+        <ul>
+          <li style="--c:var(--games);--ci:var(--games-ink)"><a href="#games-work"><div class="t">Games &amp; multi-agent systems</div><div class="m">self-play</div><div class="s">improving against its own best responses</div></a></li>
+          <li style="--c:var(--llm);--ci:var(--llm-ink)"><a href="#llm-work"><div class="t">LLM post-training</div><div class="m">self-play alignment</div><div class="s">optimizing preferences against its older self</div></a></li>
+          <li style="--c:var(--robot);--ci:var(--robot-ink)"><a href="#embodied-work"><div class="t">Robust Decision-Making</div><div class="m">imagined self-play</div><div class="s">planning against imagined adversary</div></a></li>
+          <li style="--c:var(--dllm);--ci:var(--dllm-ink)"><a href="#dllm-work"><div class="t">Diffusion LLM post-training</div><div class="m">self-distillation</div><div class="s">distilling its own reward guided denoiser</div></a></li>
+        </ul>
+      </div>
+    </figure>
+  </div>
+</header>
+
+<!-- ============================ RESEARCH DOMAINS ============================ -->
+<section id="research" class="wrap" style="padding-top:0;">
+  <div class="domains">
+    <article class="dcard reveal" id="games-work" style="--c:var(--games);--ci:var(--games-ink)">
+      <div class="dcard__mech">Self-play</div>
+      <h3>Games &amp; multi-agent RL</h3>
+      <p class="dcard__blurb">Where self-improvement is literal: iteratively expanding a strategy pool with best responses to its equilibrium, converging to global Nash equilibrium sample-efficiently.</p>
+      <ul>
+        <li><span class="t">Regret-Minimizing Double Oracle for Extensive-Form Games</span><span class="meta"><span class="venue">ICML 2023</span>Periodic DO, polynomial sample complexity</span></li>
+        <li><span class="t">Sample-Efficient Regret-Minimizing Double Oracle</span><span class="meta"><span class="venue">JMLR (minor revision)</span>adaptive strategy pool expansion</span></li>
+      </ul>
+    </article>
+
+    <article class="dcard reveal" id="embodied-work" style="--c:var(--robot);--ci:var(--robot-ink)">
+      <div class="dcard__mech">Imagined self-play</div>
+      <h3>Robust Decision-Making</h3>
+      <p class="dcard__blurb">Worst-case-aware agents for adversarial environments: sequence models that condition on returns against imagined adversaries.</p>
+      <ul>
+        <li><span class="t">Adversarially Robust Decision Transformer</span><span class="meta"><span class="venue">NeurIPS 2024</span>invited talk, DeepMind Game Theory Group</span></li>
+        <li><span class="t">Robust Adversarial RL in Stochastic Games via Sequence Modeling</span><span class="meta"><span class="venue">NeurIPS 2025</span>Reliable ML Workshop</span></li>
+      </ul>
+    </article>
+
+    <article class="dcard reveal" id="llm-work" style="--c:var(--llm);--ci:var(--llm-ink)">
+      <div class="dcard__mech">Self-play alignment</div>
+      <h3>LLM post-training</h3>
+      <p class="dcard__blurb">Self-play carried into alignment: a policy improved against itself to approximate the Nash equilibrium of the preference optimization game, with regularization as the safeguard.</p>
+      <ul>
+        <li><span class="t">RSPO: Regularized Self-Play Alignment of LLMs</span><span class="meta"><span class="venue">ICML 2026</span>plug-and-play regularization, provable Nash convergence</span></li>
+      </ul>
+    </article>
+
+    <article class="dcard reveal" id="dllm-work" style="--c:var(--dllm);--ci:var(--dllm-ink)">
+      <div class="dcard__mech">Self-distillation</div>
+      <h3>Diffusion LLM post-training</h3>
+      <p class="dcard__blurb">The newest instantiation: post-training a denoiser on signals it already generates, without unstable likelihood-ratio estimates.</p>
+      <ul>
+        <li><span class="t">GDSD: RL as Guided Denoiser Self-Distillation</span><span class="meta"><span class="venue">arXiv 2605.29398</span>stable dLLM post-training</span></li>
+        <li><span class="t">wd1: Weighted Policy Optimization for Reasoning</span><span class="meta"><span class="venue">ICLR 2026</span>ratio-free policy optimization for dLLM reasoning</span></li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<!-- ============================ PUBLICATIONS ============================ -->
+<section id="publications" class="pubs">
+  <div class="wrap">
+    <div class="eyebrow" style="display:block;margin-bottom:22px;">Selected publications</div>
+    <div class="pub reveal" style="--c:var(--dllm)">
+      <div class="pub__venue"><b>arXiv</b><span>Diffusion LLM</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2605.29398" target="_blank" rel="noopener">GDSD: Reinforcement Learning as Guided Denoiser Self-Distillation for Diffusion Language Models</a>
+        <span class="me"><b>Xiaohang Tang</b>, Keyue Jiang, Che Liu, Qifang Zhao, Xiaoxiao Xu, Sangwoong Yoon, Ilija Bogunovic · arXiv 2605.29398</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--llm)">
+      <div class="pub__venue"><b>ICML 2026</b><span>Alignment</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2503.00030" target="_blank" rel="noopener">RSPO: Regularized Self-Play Alignment of Large Language Models</a>
+        <span class="me"><b>Xiaohang Tang</b>, Sangwoong Yoon, Seongho Son, Huizhuo Yuan, Quanquan Gu, Ilija Bogunovic</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--dllm)">
+      <div class="pub__venue"><b>ICLR 2026</b><span>Diffusion LLM</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2507.08838" target="_blank" rel="noopener">wd1: Weighted Policy Optimization for Reasoning in Diffusion Language Models</a>
+        <span class="me"><b>Xiaohang Tang</b>, Rares Dolga, Sangwoong Yoon, Ilija Bogunovic</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--llm)">
+      <div class="pub__venue"><b>ICLR 2026</b><span>Alignment</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2503.08796" target="_blank" rel="noopener">Robust Multi-Objective Controlled Decoding of Large Language Models</a>
+        <span class="me">Seongho Son, William Bankes, Sangwoong Yoon, Shyam Sundhar Ramesh, <b>Xiaohang Tang</b>, Ilija Bogunovic</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--robot)">
+      <div class="pub__venue"><b>NeurIPS 2024</b><span>Offline RL</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2407.18414" target="_blank" rel="noopener">Adversarially Robust Decision Transformer</a>
+        <span class="me"><b>Xiaohang Tang</b>, Afonso Marques, Parameswaran Kamalaruban, Ilija Bogunovic · invited talk, DeepMind Game Theory Group</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--robot)">
+      <div class="pub__venue"><b>NeurIPS 2025</b><span>Reliable ML Workshop</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2510.11877" target="_blank" rel="noopener">Robust Adversarial Reinforcement Learning in Stochastic Games via Sequence Modeling</a>
+        <span class="me"><b>Xiaohang Tang</b>, Zhuowen Cheng, Satyabrat Kumar</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--games)">
+      <div class="pub__venue"><b>ICML 2023</b><span>Game theory</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2304.10498" target="_blank" rel="noopener">Regret-Minimizing Double Oracle for Extensive-Form Games</a>
+        <span class="me"><b>Xiaohang Tang</b>, Le Cong Dinh, Stephen Marcus McAleer, Yaodong Yang</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--games)">
+      <div class="pub__venue"><b>JMLR</b><span>Game theory</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2411.00954" target="_blank" rel="noopener">Sample-Efficient Regret-Minimizing Double Oracle for Extensive-Form Games</a>
+        <span class="me"><b>Xiaohang Tang</b>, Chiyuan Wang, Chengdong Ma, Ilija Bogunovic, Stephen McAleer, Yaodong Yang · accepted, minor revision</span></div>
+      <span class="pub__tag"></span>
+    </div>
+
+    <div class="pub reveal" style="--c:var(--games)">
+      <div class="pub__venue"><b>IJCAI 2021</b><span>RL theory</span></div>
+      <div class="pub__title"><a class="plink" href="https://arxiv.org/abs/2106.03442" target="_blank" rel="noopener">Average-Reward Reinforcement Learning with Trust Region Methods</a>
+        <span class="me">Xiaoteng Ma, <b>Xiaohang Tang</b>, Li Xia, Jun Yang, Qianchuan Zhao</span></div>
+      <span class="pub__tag"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <a href="mailto:xiaohang.tang.20@ucl.ac.uk">xiaohang.tang.20@ucl.ac.uk</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in');}); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+  }, { threshold:.12, rootMargin:'0px 0px -8% 0px' });
+  els.forEach(function(e){ io.observe(e); });
+})();
+
+/* Fig. 1 — hovering a domain node spotlights its branch and dims the rest */
+(function(){
+  var links = document.querySelectorAll('.hub-svg a[data-domain]');
+  var groups = document.querySelectorAll('.hub-svg .branchg');
+  links.forEach(function(a){
+    var mine = document.getElementById('bg-' + a.dataset.domain);
+    a.addEventListener('mouseenter', function(){
+      groups.forEach(function(g){ g.classList.toggle('dim', g !== mine); });
+      if(mine){ mine.classList.add('hot'); }
+    });
+    a.addEventListener('mouseleave', function(){
+      groups.forEach(function(g){ g.classList.remove('dim','hot'); });
+    });
+    /* robust click navigation (SVG anchors are flaky in some browsers) + flash the target */
+    a.addEventListener('click', function(ev){
+      var target = document.querySelector(a.getAttribute('href'));
+      if(!target){ return; }
+      ev.preventDefault();
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      target.classList.add('flash');
+      setTimeout(function(){ target.classList.remove('flash'); }, 1800);
+    });
+  });
+
+  /* respect reduced-motion: stop the SMIL pulses (CSS animations are already off) */
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.querySelectorAll('.hub-svg animateMotion, .hub-svg animate').forEach(function(n){ n.remove(); });
+  }
+})();
+</script>
+</body>
+</html>
