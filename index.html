@@ -271,7 +271,7 @@ section{padding:clamp(36px,5vw,64px) 0;}
 .dcard__blurb{color:var(--on-paper-muted);font-size:.8rem;margin-bottom:13px;}
 .dcard ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
 .dcard li{font-size:.8rem;line-height:1.4;}
-.dcard li .t{font-weight:500;}
+.dcard li .t{font-weight:500;display:inline;}
 .dcard li .meta{display:block;font-family:var(--mono);font-size:.68rem;color:var(--on-paper-muted);margin-top:4px;letter-spacing:.02em;}
 .dcard .venue{display:inline-block;color:var(--on-paper);font-weight:500;
   background:color-mix(in srgb,var(--c) 38%,transparent);
@@ -551,8 +551,8 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
       <h3>Games &amp; multi-agent RL</h3>
       <p class="dcard__blurb">Where self-improvement is literal: iteratively expanding a strategy pool with best responses to its equilibrium, converging to global Nash equilibrium sample-efficiently.</p>
       <ul>
-        <li><span class="t">Regret-Minimizing Double Oracle for Extensive-Form Games</span><span class="meta"><span class="venue">ICML 2023</span>Periodic DO, polynomial sample complexity</span></li>
-        <li><span class="t">Sample-Efficient Regret-Minimizing Double Oracle</span><span class="meta"><span class="venue">JMLR (minor revision)</span>adaptive strategy pool expansion</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2304.10498" target="_blank" rel="noopener">Regret-Minimizing Double Oracle for Extensive-Form Games</a><span class="meta"><span class="venue">ICML 2023</span>Periodic DO, polynomial sample complexity</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2411.00954" target="_blank" rel="noopener">Sample-Efficient Regret-Minimizing Double Oracle</a><span class="meta"><span class="venue">JMLR (minor revision)</span>adaptive strategy pool expansion</span></li>
       </ul>
     </article>
 
@@ -561,17 +561,18 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
       <h3>Robust Decision-Making</h3>
       <p class="dcard__blurb">Worst-case-aware agents for adversarial environments: sequence models that condition on returns against imagined adversaries.</p>
       <ul>
-        <li><span class="t">Adversarially Robust Decision Transformer</span><span class="meta"><span class="venue">NeurIPS 2024</span>invited talk, DeepMind Game Theory Group</span></li>
-        <li><span class="t">Robust Adversarial RL in Stochastic Games via Sequence Modeling</span><span class="meta"><span class="venue">NeurIPS 2025</span>Reliable ML Workshop</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2407.18414" target="_blank" rel="noopener">Adversarially Robust Decision Transformer</a><span class="meta"><span class="venue">NeurIPS 2024</span>invited talk, DeepMind Game Theory Group</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2510.11877" target="_blank" rel="noopener">Robust Adversarial RL in Stochastic Games via Sequence Modeling</a><span class="meta"><span class="venue">NeurIPS 2025</span>Reliable ML Workshop</span></li>
       </ul>
     </article>
 
     <article class="dcard reveal" id="llm-work" style="--c:var(--llm);--ci:var(--llm-ink)">
       <div class="dcard__mech">Self-play alignment</div>
       <h3>LLM post-training</h3>
-      <p class="dcard__blurb">Self-play carried into alignment: a policy improved against itself to approximate the Nash equilibrium of the preference optimization game, with regularization as the safeguard.</p>
+      <p class="dcard__blurb">Self-play carried into alignment: a policy improved against itself to approximate the Nash equilibrium of the preference optimization game.</p>
       <ul>
-        <li><span class="t">RSPO: Regularized Self-Play Alignment of LLMs</span><span class="meta"><span class="venue">ICML 2026</span>plug-and-play regularization, provable Nash convergence</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2503.00030" target="_blank" rel="noopener">RSPO: Regularized Self-Play Alignment of LLMs</a><span class="meta"><span class="venue">ICML 2026</span>plug-and-play regularization, provable Nash convergence</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2503.08796" target="_blank" rel="noopener">Robust Multi-Objective Controlled Decoding of LLMs</a><span class="meta"><span class="venue">ICLR 2026</span>worst-case multi-objective decoding via Nash equilibrium</span></li>
       </ul>
     </article>
 
@@ -580,8 +581,8 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
       <h3>Diffusion LLM post-training</h3>
       <p class="dcard__blurb">The newest instantiation: post-training a denoiser on signals it already generates, without unstable likelihood-ratio estimates.</p>
       <ul>
-        <li><span class="t">GDSD: RL as Guided Denoiser Self-Distillation</span><span class="meta"><span class="venue">arXiv 2605.29398</span>stable dLLM post-training</span></li>
-        <li><span class="t">wd1: Weighted Policy Optimization for Reasoning</span><span class="meta"><span class="venue">ICLR 2026</span>ratio-free policy optimization for dLLM reasoning</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2605.29398" target="_blank" rel="noopener">GDSD: RL as Guided Denoiser Self-Distillation</a><span class="meta"><span class="venue">arXiv 2605.29398</span>stable dLLM post-training</span></li>
+        <li><a class="plink t" href="https://arxiv.org/abs/2507.08838" target="_blank" rel="noopener">wd1: Weighted Policy Optimization for Reasoning</a><span class="meta"><span class="venue">ICLR 2026</span>ratio-free policy optimization for dLLM reasoning</span></li>
       </ul>
     </article>
   </div>
