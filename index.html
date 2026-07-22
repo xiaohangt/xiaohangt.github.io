@@ -140,6 +140,12 @@ section{padding:clamp(36px,5vw,64px) 0;}
 }
 .news .d{font-family:var(--mono);font-size:.78rem;color:var(--on-paper);white-space:nowrap;padding-top:3px;}
 .news b{color:var(--on-paper);font-weight:600;}
+.news a{
+  color:var(--on-paper);font-weight:600;text-decoration:none;
+  border-bottom:1.5px solid color-mix(in srgb,var(--c,var(--dllm)) 70%,transparent);
+  transition:color .2s,border-color .2s;
+}
+.news a:hover{color:var(--games-ink);border-color:color-mix(in srgb,var(--games) 55%,transparent);}
 
 /* contact pills — email, LinkedIn, Twitter */
 .contacts{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
@@ -401,11 +407,11 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
       <aside class="news reveal">
         <span class="eyebrow">News</span>
         <ul>
-          <li style="--c:var(--dllm)"><span class="d">Dec 2026</span><span>Invited talk on <b>Diffusion Language Models</b> at Tencent LightSpeed Studio.</span></li>
-          <li style="--c:var(--dllm)"><span class="d">Oct 2026</span><span>Invited talk on <b>Diffusion Language Models</b> and its Post-training at <a class="plink" href="https://macaron.im/mindlab" target="_blank" rel="noopener">Mind Lab</a>, Macaron AI.</span></li>
           <li style="--c:var(--gold)"><span class="d">Jun 2026</span><span>Joined <b>Google DeepMind</b> (London) as a Research Scientist Intern, working on multi-agent systems.</span></li>
           <li style="--c:var(--llm)"><span class="d">May 2026</span><span><b>RSPO</b> accepted at <b>ICML 2026</b>; <b>GDSD</b> preprint released on arXiv.</span></li>
           <li style="--c:var(--dllm)"><span class="d">Jan 2026</span><span><b>wd1</b> and <b>Robust Multi-Objective Controlled Decoding</b> accepted at <b>ICLR 2026</b>.</span></li>
+          <li style="--c:var(--dllm)"><span class="d">Dec 2025</span><span>Invited talk on <b>Diffusion Language Models</b> at Tencent LightSpeed Studio.</span></li>
+          <li style="--c:var(--dllm)"><span class="d">Oct 2025</span><span>Invited talk on <b>Diffusion Language Models</b> and its Post-training at <a href="https://macaron.im/mindlab" target="_blank" rel="noopener">Mind Lab</a>, Macaron AI.</span></li>
           <li><span class="d">Oct 2025</span><span><b>Robust Adversarial RL in Stochastic Games</b> accepted at the NeurIPS 2025 Reliable ML Workshop.</span></li>
           <li style="--c:var(--dllm)"><span class="d">Jun 2025</span><span><b>wd1</b> report released on arXiv.</span></li>
           <li style="--c:var(--games)"><span class="d">Mar 2025</span><span>Invited talk on <b>ARDT</b> at the Google DeepMind Game Theory Group (London).</span></li>
