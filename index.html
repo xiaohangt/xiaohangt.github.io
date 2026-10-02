@@ -103,12 +103,16 @@ section{padding:clamp(40px,6vw,68px) 0;}
 
 /* ============================ HERO ============================ */
 .hero{padding:clamp(36px,5vw,64px) 0 clamp(28px,4vw,40px);}
-.hero__inner{max-width:68ch;}
 
 .hero__name{
   font-size:clamp(2.1rem,5vw,3rem);
   font-weight:500;letter-spacing:-.02em;line-height:.95;
   margin:0 0 .35em;
+}
+.hero__role{
+  font-size:clamp(.95rem,1.5vw,1.08rem);
+  color:var(--games-ink);font-weight:500;line-height:1.4;
+  margin:0 0 16px;
 }
 .contacts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;}
 .cbtn{
@@ -127,12 +131,8 @@ section{padding:clamp(40px,6vw,68px) 0;}
   box-shadow:0 10px 22px -14px color-mix(in srgb,var(--games) 60%,transparent);
 }
 
-.overview-label{
-  font-family:var(--display);font-style:italic;
-  font-size:1.05rem;color:var(--gold-ink);margin:0 0 10px;
-}
 .overview p{
-  margin:0 0 12px;color:var(--on-paper-muted);max-width:62ch;
+  margin:0 0 12px;color:var(--on-paper-muted);
 }
 .overview p b{color:var(--on-paper);font-weight:600;}
 .overview p em{color:var(--on-paper);font-style:normal;font-weight:500;}
@@ -143,6 +143,32 @@ section{padding:clamp(40px,6vw,68px) 0;}
 }
 .overview__focus p{margin:0 0 10px;}
 .overview__focus p:last-child{margin-bottom:0;}
+
+/* ============================ EXPERIENCE ============================ */
+.experience{padding:8px 0 clamp(36px,5vw,56px);}
+.exp{display:flex;flex-direction:column;gap:12px;}
+.exp-card{
+  display:grid;grid-template-columns:88px 1fr;gap:18px;align-items:start;
+  border:1px solid var(--rule);border-radius:12px;
+  background:var(--card);padding:14px 18px;
+  transition:transform .25s, box-shadow .25s;
+}
+.exp-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 28px -20px rgba(31,29,39,.35);
+}
+.exp-logo{height:56px;display:flex;align-items:center;justify-content:center;}
+.exp-logo img{height:44px;width:auto;max-width:100%;object-fit:contain;border-radius:8px;}
+.exp-card h3{font-size:1.05rem;margin:0 0 2px;}
+.exp-meta{font-size:.86rem;color:var(--on-paper-muted);margin:0 0 4px;}
+.exp-meta b{color:var(--on-paper);font-weight:500;}
+.exp-meta .when{white-space:nowrap;}
+.exp-card p:last-child{margin:0;color:var(--on-paper-muted);font-size:.9rem;}
+@media(max-width:520px){
+  .exp-card{grid-template-columns:64px 1fr;gap:12px;padding:12px 14px;}
+  .exp-logo{height:44px;}
+  .exp-logo img{height:34px;}
+}
 
 /* ============================ RESEARCH ============================ */
 .research{padding-top:12px;}
@@ -367,6 +393,7 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
     <a class="nav__mark" href="#">Xiaohang&nbsp;Tang</a>
     <div class="nav__links">
       <a href="#about">About</a>
+      <a href="#experience">Experience</a>
       <a href="#research">Research</a>
       <a href="#news">News</a>
       <a href="#publications">Publications</a>
@@ -377,8 +404,9 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
 <!-- ============================ HERO / ABOUT ============================ -->
 <header class="hero" id="about">
   <div class="wrap">
-    <div class="hero__inner reveal">
+    <div class="reveal">
       <h1 class="hero__name">Xiaohang Tang</h1>
+      <p class="hero__role">Ph.D. Candidate · UCL AI Centre · University College London</p>
 
       <div class="contacts">
         <a class="cbtn" href="mailto:xiaohangtang6@gmail.com">
@@ -408,9 +436,8 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
       </div>
 
       <div class="overview">
-        <p class="overview-label">Research overview</p>
         <p>
-          Hi — I'm Xiaohang. I'm a Student Researcher at <b>Google&nbsp;DeepMind</b> (London)
+          Hi — I'm Xiaohang, currently a Student Researcher at <b>Google&nbsp;DeepMind</b> (London)
           and a PhD candidate at <b>UCL</b> advised by
           <a class="ilink" href="https://rhinelab.ai/team/ilija-bogunovic" target="_blank" rel="noopener">Ilija Bogunovic</a>.
           I have also been fortunate to work closely with
@@ -418,58 +445,86 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
         </p>
         <div class="overview__focus">
           <p>
-            <b>My central question is how a learning system can keep improving from signals it generates
-            itself</b>, the way people learn most new skills: by practicing, judging their own attempts, and
-            refining, rather than by following an exhaustive answer key. External supervision such as human
-            labels and preference annotations is expensive, finite, and tends to cap a model at the level of
-            whoever provides it; self-improvement lets learning continue past that limit, by interacting with
-            the open world.
+            <b>My central research is AI self-improvement:</b> studying how a learning system can keep improving
+            from signals it generates itself. As people learn by practicing and refining rather than
+            following an answer key, such a system keeps learning by interacting with the open world, instead
+            of being capped by external supervision that is expensive and limited to its supervisor's level.
           </p>
           <p>
-            <b>Self-play in games.</b> In extensive-form games, I study double oracle methods that grow a
-            pool of strategies by repeatedly adding best responses to the current equilibrium, converging
-            to a Nash equilibrium of the full game. This includes regret-minimizing double oracle
-            (<a class="ilink" href="https://arxiv.org/abs/2304.10498" target="_blank" rel="noopener">RMDO</a>, ICML 2023)
-            and its sample-efficient extension with adaptive strategy-pool expansion
-            (<a class="ilink" href="https://arxiv.org/abs/2411.00954" target="_blank" rel="noopener">AdaDO</a>, JMLR).
+            <b>Self-play in games.</b>
+            <a class="ilink" href="https://arxiv.org/abs/2304.10498" target="_blank" rel="noopener">RMDO</a> (ICML 2023)
+            grows a strategy pool with best responses to the current equilibrium, converging to a Nash
+            equilibrium in extensive-form games;
+            <a class="ilink" href="https://arxiv.org/abs/2411.00954" target="_blank" rel="noopener">AdaDO</a> (JMLR)
+            makes this expansion adaptive and sample-efficient.
           </p>
           <p>
-            <b>Imagined self-play for robust decision-making.</b> When the opponent cannot be queried,
-            the agent plays against an adversary it imagines from data. The Adversarially Robust Decision
-            Transformer (<a class="ilink" href="https://arxiv.org/abs/2407.18414" target="_blank" rel="noopener">ARDT</a>, NeurIPS 2024)
-            conditions a sequence model on worst-case returns, and
+            <b>Imagined self-play for robust decision-making.</b>
+            <a class="ilink" href="https://arxiv.org/abs/2407.18414" target="_blank" rel="noopener">ARDT</a> (NeurIPS 2024)
+            trains a sequence model against an adversary imagined from offline data;
             <a class="ilink" href="https://arxiv.org/abs/2510.11877" target="_blank" rel="noopener">CART</a>
-            (NeurIPS 2025 Reliable ML Workshop) extends this to stochastic games.
+            (NeurIPS 2025 Workshop) extends this to stochastic games.
           </p>
           <p>
-            <b>Self-play alignment for LLMs.</b> I treat preference optimization as a game that a language
-            model plays against itself.
+            <b>Self-play alignment for LLMs.</b>
             <a class="ilink" href="https://arxiv.org/abs/2503.00030" target="_blank" rel="noopener">RSPO</a> (ICML 2026)
-            adds plug-and-play regularization to self-play alignment with provable convergence to the Nash
-            equilibrium, and
-            <a class="ilink" href="https://arxiv.org/abs/2503.08796" target="_blank" rel="noopener">RMOD</a>
-            (ICLR 2026) brings the same game view to controlled decoding (test-time alignment), where the
-            opponent is instead an adversarial weighting of the alignment objectives, so the decoded
-            response stays robust to the worst-case objective.
+            treats preference optimization as a game the model plays against itself, with plug-and-play
+            regularization and provable Nash convergence;
+            <a class="ilink" href="https://arxiv.org/abs/2503.08796" target="_blank" rel="noopener">RMOD</a> (ICLR 2026)
+            brings the same game view to controlled decoding (test-time alignment), against a worst-case
+            weighting of objectives.
           </p>
           <p>
-            <b>Self-distillation for diffusion LLMs.</b> For diffusion language models, I post-train the
-            denoiser on signals it already produces, avoiding unstable likelihood-ratio estimates.
+            <b>Self-distillation for diffusion LLMs.</b>
             <a class="ilink" href="https://arxiv.org/abs/2507.08838" target="_blank" rel="noopener">wd1</a> (ICLR 2026)
-            is a ratio-free weighted policy optimization for reasoning, and
+            is ratio-free reinforcement learning for dLLM reasoning;
             <a class="ilink" href="https://arxiv.org/abs/2605.29398" target="_blank" rel="noopener">GDSD</a> (NeurIPS 2026)
-            recasts RL as distilling a reward-guided version of the denoiser back into itself, making it
-            completely likelihood-free and ELBO-free.
+            recasts RL as distilling a reward-guided version of the denoiser back into itself, completely
+            likelihood-free and ELBO-free.
           </p>
         </div>
         <p>
-          Before the PhD, I obtained my master's degree in Data Science at UCL and
-          a bachelor's degree in Math at Sun Yat-sen University (SYSU).
+          Before the PhD, I received an MSc in Data Science from UCL and a BSc in Mathematics from
+          Sun Yat-sen University (SYSU).
         </p>
       </div>
     </div>
   </div>
 </header>
+
+<!-- ============================ EXPERIENCE ============================ -->
+<section id="experience" class="experience">
+  <div class="wrap">
+    <h2 class="section-title reveal" style="--c:var(--games)"><span class="mark"></span>Experience</h2>
+    <div class="exp">
+      <article class="exp-card reveal">
+        <div class="exp-logo"><img src="assets/logos/gdm.svg" alt="Google DeepMind logo" /></div>
+        <div>
+          <h3>Student Researcher</h3>
+          <p class="exp-meta"><b>Google DeepMind</b> · London, UK · <span class="when">Jun 2026 – present</span></p>
+          <p>Working on multi-agent systems.</p>
+        </div>
+      </article>
+      <article class="exp-card reveal">
+        <div class="exp-logo"><img src="assets/logos/tencent.png" alt="Tencent logo" /></div>
+        <div>
+          <h3>Research Scientist (Intern)</h3>
+          <p class="exp-meta"><b>Tencent LightSpeed Studio</b> · London, UK · <span class="when">Dec 2025 – May 2026</span></p>
+          <p>Working on the stability of LLM RL post-training.</p>
+        </div>
+      </article>
+      <article class="exp-card reveal">
+        <div class="exp-logo"><img src="assets/logos/ucl.svg" alt="UCL logo" /></div>
+        <div>
+          <h3>PhD Candidate</h3>
+          <p class="exp-meta"><b>University College London</b> · London, UK</p>
+          <p>Research on AI self-improvement, advised by
+            <a class="ilink" href="https://rhinelab.ai/team/ilija-bogunovic" target="_blank" rel="noopener">Ilija Bogunovic</a>.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 
 <!-- ============================ RESEARCH DIRECTION ============================ -->
 <section id="research" class="research">
@@ -642,7 +697,7 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
         <p class="dcard__blurb">The newest instantiation: post-training a denoiser on signals it already generates, without unstable likelihood-ratio estimates.</p>
         <ul>
           <li><a class="plink t" href="https://arxiv.org/abs/2605.29398" target="_blank" rel="noopener">GDSD: RL as Guided Denoiser Self-Distillation</a><span class="meta"><span class="venue">NeurIPS 2026</span>stable dLLM post-training</span></li>
-          <li><a class="plink t" href="https://arxiv.org/abs/2507.08838" target="_blank" rel="noopener">wd1: Weighted Policy Optimization for Reasoning</a><span class="meta"><span class="venue">ICLR 2026</span>ratio-free policy optimization for dLLM reasoning</span></li>
+          <li><a class="plink t" href="https://arxiv.org/abs/2507.08838" target="_blank" rel="noopener">wd1: Weighted Policy Optimization for Reasoning</a><span class="meta"><span class="venue">ICLR 2026</span>ratio-free reinforcement learning for dLLM reasoning</span></li>
         </ul>
       </article>
     </div>
