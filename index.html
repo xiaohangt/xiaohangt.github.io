@@ -175,10 +175,10 @@ section{padding:clamp(40px,6vw,68px) 0;}
 .research__lead{
   font-family:var(--display);font-weight:400;
   font-size:clamp(1.35rem,2.8vw,1.75rem);line-height:1.25;
-  margin:8px 0 12px;max-width:28ch;
+  margin:8px 0 12px;
 }
 .research__blurb{
-  color:var(--on-paper-muted);max-width:68ch;margin:0 0 18px;
+  color:var(--on-paper-muted);margin:0 0 18px;
 }
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;}
 .tag{
@@ -292,27 +292,79 @@ section{padding:clamp(40px,6vw,68px) 0;}
 .plink:hover{color:var(--games-ink);border-color:color-mix(in srgb,var(--games) 45%,transparent);}
 
 /* ============================ NEWS ============================ */
+.news{--yw:64px;--yg:20px;position:relative;}
+.news::before{
+  content:"";position:absolute;top:22px;bottom:0;
+  left:calc(var(--yw) + var(--yg) + 13px);width:2px;border-radius:2px;
+  background:linear-gradient(to bottom,
+    color-mix(in srgb,var(--gold) 75%,transparent) 0,
+    var(--rule) 140px, var(--rule) calc(100% - 44px), transparent 100%);
+}
+.news-year{display:grid;grid-template-columns:var(--yw) 1fr;column-gap:var(--yg);}
+.news-year + .news-year{margin-top:18px;}
+.news-year__label{
+  position:sticky;top:76px;align-self:start;
+  padding-top:10px;text-align:right;
+  font-size:1.3rem;line-height:1.2;color:var(--on-paper);
+}
 .news-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;}
-.news-list li{
-  display:grid;grid-template-columns:92px 1fr;gap:16px;
-  padding:12px 8px;border-radius:8px;
-  color:var(--on-paper-muted);
-  transition:background .2s;
+.news-list .news-item{
+  position:relative;
+  display:grid;grid-template-columns:34px 78px 1fr;column-gap:12px;align-items:baseline;
+  padding:10px 14px 10px 38px;border-radius:10px;
+  transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1), background .25s;
 }
-.news-list li:hover{background:color-mix(in srgb,var(--c,var(--gold)) 8%, transparent);}
-.news-list .d{
-  font-family:var(--mono);font-size:.8rem;font-weight:500;
-  color:var(--ci,var(--on-paper));white-space:nowrap;padding-top:2px;
+.news-item::before,
+.news-item.is-latest::after{
+  content:"";position:absolute;left:8px;top:16px;
+  width:12px;height:12px;border-radius:50%;
 }
-.news-list b{color:var(--on-paper);font-weight:600;}
-.news-list a{
+.news-item::before{
+  background:var(--c,var(--gold));
+  border:1.5px solid rgba(31,29,39,.55);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--c,var(--gold)) 30%,var(--paper));
+  transition:transform .25s cubic-bezier(.2,.7,.2,1);
+}
+.news-item:hover{background:color-mix(in srgb,var(--c,var(--gold)) 10%,transparent);}
+.news-item:hover::before{transform:scale(1.25);}
+.news-item.is-latest::after{
+  border:2px solid var(--c,var(--gold));pointer-events:none;
+  animation:news-ping 2.6s cubic-bezier(0,0,.2,1) infinite;
+}
+@keyframes news-ping{0%{transform:scale(1);opacity:.75;}80%,100%{transform:scale(2.6);opacity:0;}}
+.news-date{
+  font-family:var(--mono);font-size:.76rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ci,var(--on-paper));
+}
+.news-kind{
+  justify-self:start;white-space:nowrap;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ci,var(--on-paper));
+  background:color-mix(in srgb,var(--c,var(--gold)) 20%,transparent);
+  border:1px solid color-mix(in srgb,var(--c,var(--gold)) 65%,transparent);
+  padding:2px 8px;border-radius:100px;
+}
+.news-text{margin:0;color:var(--on-paper-muted);}
+.news-text b{color:var(--on-paper);font-weight:600;}
+.news-text a{
   color:var(--on-paper);font-weight:600;text-decoration:none;
   border-bottom:1.5px solid color-mix(in srgb,var(--c,var(--dllm)) 70%,transparent);
+  transition:color .2s;
 }
-.news-list a:hover{color:var(--games-ink);}
-@media(max-width:520px){
-  .news-list li{grid-template-columns:1fr;gap:4px;}
+.news-text a:hover{color:var(--games-ink);}
+@media(max-width:760px){
+  .news-list .news-item{grid-template-columns:auto 1fr;row-gap:4px;}
+  .news-item::before,
+  .news-item.is-latest::after{top:14px;}
+  .news-text{grid-column:1 / -1;}
 }
+@media(max-width:600px){
+  .news{--yw:0px;--yg:0px;}
+  .news-year{grid-template-columns:1fr;}
+  .news-year__label{position:static;text-align:left;padding:0 0 4px 38px;font-size:1.15rem;}
+}
+@media(prefers-reduced-motion:reduce){ .news-item.is-latest::after{display:none;} }
 
 /* ============================ PUBLICATIONS ============================ */
 .pubs{background:
@@ -710,18 +762,70 @@ a:focus-visible{outline:2px solid var(--games);outline-offset:3px;border-radius:
 <section id="news">
   <div class="wrap">
     <h2 class="section-title reveal" style="--c:var(--gold)"><span class="mark"></span>News</h2>
-    <ul class="news-list">
-      <li class="reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)"><span class="d">Sep 2026</span><span><b>GDSD</b> accepted at <b>NeurIPS 2026</b>.</span></li>
-      <li class="reveal" style="--c:var(--gold);--ci:var(--gold-ink)"><span class="d">Jun 2026</span><span>Joined <b>Google DeepMind</b> (London) as a Student Researcher, working on multi-agent systems.</span></li>
-      <li class="reveal" style="--c:var(--llm);--ci:var(--llm-ink)"><span class="d">May 2026</span><span><b>RSPO</b> accepted at <b>ICML 2026</b>; <b>GDSD</b> preprint released on arXiv.</span></li>
-      <li class="reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)"><span class="d">Jan 2026</span><span><b>wd1</b> and <b>Robust Multi-Objective Controlled Decoding</b> accepted at <b>ICLR 2026</b>.</span></li>
-      <li class="reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)"><span class="d">Dec 2025</span><span>Invited talk on <b>Diffusion Language Models</b> at Tencent LightSpeed Studio.</span></li>
-      <li class="reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)"><span class="d">Oct 2025</span><span>Invited talk on <b>Diffusion Language Models</b> and its Post-training at <a href="https://macaron.im/mindlab" target="_blank" rel="noopener">Mind Lab</a>, Macaron AI.</span></li>
-      <li class="reveal"><span class="d">Oct 2025</span><span><b>Robust Adversarial RL in Stochastic Games</b> accepted at the NeurIPS 2025 Reliable ML Workshop.</span></li>
-      <li class="reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)"><span class="d">Jun 2025</span><span><b>wd1</b> report released on arXiv.</span></li>
-      <li class="reveal" style="--c:var(--games);--ci:var(--games-ink)"><span class="d">Mar 2025</span><span>Invited talk on <b>ARDT</b> at the Google DeepMind Game Theory Group (London).</span></li>
-      <li class="reveal" style="--c:var(--robot);--ci:var(--robot-ink)"><span class="d">Sep 2024</span><span><b>ARDT</b> accepted at <b>NeurIPS 2024</b>.</span></li>
-    </ul>
+    <div class="news">
+      <div class="news-year">
+        <h3 class="news-year__label reveal">2026</h3>
+        <ol class="news-list">
+          <li class="news-item is-latest reveal" style="--c:var(--gold);--ci:var(--gold-ink)">
+            <time class="news-date" datetime="2026-10">Oct</time><span class="news-kind">Talk</span>
+            <p class="news-text">Invited talk on <b>No-Regret Self-Improvement</b> at the
+              <a href="https://uq-ds-seminar.github.io/si-xiaohang/" target="_blank" rel="noopener">UQ-DS-Seminar</a>,
+              hosted by <a href="https://ruihongqiu.github.io/" target="_blank" rel="noopener">Ruihong Qiu</a>.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)">
+            <time class="news-date" datetime="2026-09">Sep</time><span class="news-kind">Paper</span>
+            <p class="news-text"><b>GDSD</b> accepted at <b>NeurIPS 2026</b>.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--gold);--ci:var(--gold-ink)">
+            <time class="news-date" datetime="2026-06">Jun</time><span class="news-kind">Career</span>
+            <p class="news-text">Joined <b>Google DeepMind</b> (London) as a Student Researcher, working on multi-agent systems.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--llm);--ci:var(--llm-ink)">
+            <time class="news-date" datetime="2026-05">May</time><span class="news-kind">Paper</span>
+            <p class="news-text"><b>RSPO</b> accepted at <b>ICML 2026</b>; <b>GDSD</b> preprint released on arXiv.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)">
+            <time class="news-date" datetime="2026-01">Jan</time><span class="news-kind">Paper</span>
+            <p class="news-text"><b>wd1</b> and <b>Robust Multi-Objective Controlled Decoding</b> accepted at <b>ICLR 2026</b>.</p>
+          </li>
+        </ol>
+      </div>
+      <div class="news-year">
+        <h3 class="news-year__label reveal">2025</h3>
+        <ol class="news-list">
+          <li class="news-item reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)">
+            <time class="news-date" datetime="2025-12">Dec</time><span class="news-kind">Talk</span>
+            <p class="news-text">Invited talk on <b>Diffusion Language Models</b> at Tencent LightSpeed Studio.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)">
+            <time class="news-date" datetime="2025-10">Oct</time><span class="news-kind">Talk</span>
+            <p class="news-text">Invited talk on <b>Diffusion Language Models</b> and its Post-training at
+              <a href="https://macaron.im/mindlab" target="_blank" rel="noopener">Mind Lab</a>, Macaron AI.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--robot);--ci:var(--robot-ink)">
+            <time class="news-date" datetime="2025-10">Oct</time><span class="news-kind">Paper</span>
+            <p class="news-text"><b>Robust Adversarial RL in Stochastic Games</b> accepted at the NeurIPS 2025 Reliable ML Workshop.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--dllm);--ci:var(--dllm-ink)">
+            <time class="news-date" datetime="2025-06">Jun</time><span class="news-kind">Preprint</span>
+            <p class="news-text"><b>wd1</b> report released on arXiv.</p>
+          </li>
+          <li class="news-item reveal" style="--c:var(--robot);--ci:var(--robot-ink)">
+            <time class="news-date" datetime="2025-03">Mar</time><span class="news-kind">Talk</span>
+            <p class="news-text">Invited talk on <b>ARDT</b> at the Google DeepMind Game Theory Group (London).</p>
+          </li>
+        </ol>
+      </div>
+      <div class="news-year">
+        <h3 class="news-year__label reveal">2024</h3>
+        <ol class="news-list">
+          <li class="news-item reveal" style="--c:var(--robot);--ci:var(--robot-ink)">
+            <time class="news-date" datetime="2024-09">Sep</time><span class="news-kind">Paper</span>
+            <p class="news-text"><b>ARDT</b> accepted at <b>NeurIPS 2024</b>.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
 </section>
 
